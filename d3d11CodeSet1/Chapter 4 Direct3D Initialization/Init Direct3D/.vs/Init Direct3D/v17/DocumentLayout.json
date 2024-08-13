@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{415A387B-CAA1-453C-9C2F-EAAF8094859E}|Init Direct3D.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\Init Direct3D.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{415A387B-CAA1-453C-9C2F-EAAF8094859E}|Init Direct3D.vcxproj|solutionrelative:Init Direct3D.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Init Direct3D.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\Init Direct3D.cpp",
+              "RelativeDocumentMoniker": "Init Direct3D.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\Init Direct3D.cpp",
+              "RelativeToolTip": "Init Direct3D.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-13T04:37:43.329Z",
+              "EditorCaption": ""
             }
           ]
         }
