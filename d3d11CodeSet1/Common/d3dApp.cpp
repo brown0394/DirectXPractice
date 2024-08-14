@@ -454,7 +454,7 @@ bool D3DApp::InitDirect3D()
 	HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory));
 
 	HR(dxgiFactory->CreateSwapChain(md3dDevice, &sd, &mSwapChain));
-	
+	HR(dxgiFactory->MakeWindowAssociation(MainWnd(), DXGI_MWA_NO_WINDOW_CHANGES));
 	ReleaseCOM(dxgiDevice);
 	ReleaseCOM(dxgiAdapter);
 	ReleaseCOM(dxgiFactory);
