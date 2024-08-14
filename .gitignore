@@ -32,3 +32,10 @@
 *.app
 
 *.jfm
+*.vsidx
+*.suo
+*.VC
+*.ipch
+*.pdb
+*.log
+*.ilk
