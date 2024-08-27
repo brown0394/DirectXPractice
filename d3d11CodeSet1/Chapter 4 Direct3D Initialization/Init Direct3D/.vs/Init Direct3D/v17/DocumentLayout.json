@@ -5,6 +5,9 @@
     {
       "AbsoluteMoniker": "D:0:0:{415A387B-CAA1-453C-9C2F-EAAF8094859E}|Init Direct3D.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\Init Direct3D.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{415A387B-CAA1-453C-9C2F-EAAF8094859E}|Init Direct3D.vcxproj|solutionrelative:Init Direct3D.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{415A387B-CAA1-453C-9C2F-EAAF8094859E}|Init Direct3D.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,11 +17,23 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "d3dApp.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp",
+              "RelativeDocumentMoniker": "..\\..\\Common\\d3dApp.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp",
+              "RelativeToolTip": "..\\..\\Common\\d3dApp.cpp",
+              "ViewState": "AQIAAOMBAAAAAAAAAAAYwNwBAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-14T04:15:48.27Z"
             },
             {
               "$type": "Document",
@@ -28,7 +43,7 @@
               "RelativeDocumentMoniker": "Init Direct3D.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 4 Direct3D Initialization\\Init Direct3D\\Init Direct3D.cpp",
               "RelativeToolTip": "Init Direct3D.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAANAAAA",
+              "ViewState": "AQIAACgAAAAAAAAAAAAnwDEAAAALAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-08-13T04:37:43.329Z",
               "EditorCaption": ""

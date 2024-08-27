@@ -446,15 +446,35 @@ bool D3DApp::InitDirect3D()
 
 	IDXGIDevice* dxgiDevice = 0;
 	HR(md3dDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice));
-	      
+
 	IDXGIAdapter* dxgiAdapter = 0;
 	HR(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter));
 
 	IDXGIFactory* dxgiFactory = 0;
 	HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory));
+/*
+	UINT i = 0;
+	IDXGIAdapter* pAdapter;
+	std::vector <IDXGIAdapter*> vAdapters;
+	while (dxgiFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND)
+	{
+		vAdapters.push_back(pAdapter);
+		++i;
+	}
+	i = 0;
+	IDXGIOutput* output;
+	UINT num = 0;
+	while (dxgiAdapter->EnumOutputs(i, &output) != DXGI_ERROR_NOT_FOUND) {
+		++i;
+		output->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &num, 0);
+		DXGI_MODE_DESC* pDescs = new DXGI_MODE_DESC[num];
+		output->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &num, pDescs);
+		delete[] pDescs;
+	}*/
+	
 
 	HR(dxgiFactory->CreateSwapChain(md3dDevice, &sd, &mSwapChain));
-	HR(dxgiFactory->MakeWindowAssociation(MainWnd(), DXGI_MWA_NO_WINDOW_CHANGES));
+	//HR(dxgiFactory->MakeWindowAssociation(MainWnd(), DXGI_MWA_NO_WINDOW_CHANGES));
 	ReleaseCOM(dxgiDevice);
 	ReleaseCOM(dxgiAdapter);
 	ReleaseCOM(dxgiFactory);
