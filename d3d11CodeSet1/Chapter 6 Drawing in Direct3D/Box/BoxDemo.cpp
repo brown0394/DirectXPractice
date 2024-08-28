@@ -40,7 +40,8 @@ private:
 	void BuildVertexLayout();
 
 private:
-	ID3D11Buffer* mBoxVB;
+	ID3D11Buffer* mBoxVLB;
+	ID3D11Buffer* mBoxVCB;
 	ID3D11Buffer* mBoxIB;
 
 	ID3DX11Effect* mFX;
@@ -78,7 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
  
 
 BoxApp::BoxApp(HINSTANCE hInstance)
-: D3DApp(hInstance), mBoxVB(0), mBoxIB(0), mFX(0), mTech(0),
+: D3DApp(hInstance), mBoxVLB(0), mBoxVCB(0), mBoxIB(0), mFX(0), mTech(0),
   mfxWorldViewProj(0), mInputLayout(0), 
   mTheta(1.5f*MathHelper::Pi), mPhi(0.25f*MathHelper::Pi), mRadius(5.0f)
 {
@@ -95,7 +96,8 @@ BoxApp::BoxApp(HINSTANCE hInstance)
 
 BoxApp::~BoxApp()
 {
-	ReleaseCOM(mBoxVB);
+	ReleaseCOM(mBoxVLB);
+	ReleaseCOM(mBoxVCB);
 	ReleaseCOM(mBoxIB);
 	ReleaseCOM(mFX);
 	ReleaseCOM(mInputLayout);
@@ -146,9 +148,11 @@ void BoxApp::DrawScene()
 	md3dImmediateContext->IASetInputLayout(mInputLayout);
     md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT stride = sizeof(Vertex);
+	UINT strideL = sizeof(XMFLOAT3);
+	UINT strideC = sizeof(XMFLOAT4);
     UINT offset = 0;
-    md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
+    md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVLB, &strideL, &offset);
+	md3dImmediateContext->IASetVertexBuffers(1, 1, &mBoxVCB, &strideC, &offset);
 	md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set constants
@@ -220,7 +224,7 @@ void BoxApp::OnMouseMove(WPARAM btnState, int x, int y)
 void BoxApp::BuildGeometryBuffers()
 {
 	// Create vertex buffer
-    Vertex vertices[] =
+    /*Vertex vertices[] =
     {
 		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), (const float*)&Colors::White   },
 		{ XMFLOAT3(-1.0f, +1.0f, -1.0f), (const float*)&Colors::Black   },
@@ -230,19 +234,49 @@ void BoxApp::BuildGeometryBuffers()
 		{ XMFLOAT3(-1.0f, +1.0f, +1.0f), (const float*)&Colors::Yellow  },
 		{ XMFLOAT3(+1.0f, +1.0f, +1.0f), (const float*)&Colors::Cyan    },
 		{ XMFLOAT3(+1.0f, -1.0f, +1.0f), (const float*)&Colors::Magenta }
-    };
+    };*/
+	XMFLOAT3 vertexLocs[] = {
+		XMFLOAT3(-1.0f, -1.0f, -1.0f),
+		XMFLOAT3(-1.0f, +1.0f, -1.0f),
+		XMFLOAT3(+1.0f, +1.0f, -1.0f),
+		XMFLOAT3(+1.0f, -1.0f, -1.0f),
+		XMFLOAT3(-1.0f, -1.0f, +1.0f),
+		XMFLOAT3(-1.0f, +1.0f, +1.0f),
+		XMFLOAT3(+1.0f, +1.0f, +1.0f),
+		XMFLOAT3(+1.0f, -1.0f, +1.0f)
+	};
+	XMFLOAT4 vertexColors[] = {
+		(const float*)&Colors::White,
+		(const float*)&Colors::Black,
+		(const float*)&Colors::Red,
+		(const float*)&Colors::Green,
+		(const float*)&Colors::Blue,
+		(const float*)&Colors::Yellow,
+		(const float*)&Colors::Cyan,
+		(const float*)&Colors::Magenta
+	};
 
-    D3D11_BUFFER_DESC vbd;
-    vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof(Vertex) * 8;
-    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vbd.CPUAccessFlags = 0;
-    vbd.MiscFlags = 0;
-	vbd.StructureByteStride = 0;
-    D3D11_SUBRESOURCE_DATA vinitData;
-    vinitData.pSysMem = vertices;
-    HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mBoxVB));
+    D3D11_BUFFER_DESC vlbd;
+    vlbd.Usage = D3D11_USAGE_IMMUTABLE;
+    vlbd.ByteWidth = sizeof(XMFLOAT3) * 8;
+    vlbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vlbd.CPUAccessFlags = 0;
+    vlbd.MiscFlags = 0;
+	vlbd.StructureByteStride = 0;
+    D3D11_SUBRESOURCE_DATA vlinitData;
+    vlinitData.pSysMem = vertexLocs;
+    HR(md3dDevice->CreateBuffer(&vlbd, &vlinitData, &mBoxVLB));
 
+	D3D11_BUFFER_DESC vcbd;
+	vcbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vcbd.ByteWidth = sizeof(XMFLOAT4) * 8;
+	vcbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vcbd.CPUAccessFlags = 0;
+	vcbd.MiscFlags = 0;
+	vcbd.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA vcinitData;
+	vcinitData.pSysMem = vertexColors;
+	HR(md3dDevice->CreateBuffer(&vcbd, &vcinitData, &mBoxVCB));
 
 	// Create the index buffer
 
@@ -326,7 +360,7 @@ void BoxApp::BuildVertexLayout()
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 	{
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	// Create the input layout
