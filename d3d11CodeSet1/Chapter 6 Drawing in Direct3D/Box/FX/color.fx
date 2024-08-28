@@ -6,7 +6,12 @@
 
 cbuffer cbPerObject
 {
-	float4x4 gWorldViewProj; 
+	float4x4 gWorldViewProj;
+};
+
+cbuffer cbPerFrame
+{
+    float gTime;
 };
 
 struct VertexIn
@@ -25,6 +30,9 @@ VertexOut VS(VertexIn vin)
 {
 	VertexOut vout;
 	
+    vin.PosL.xy += 0.5f * sin(vin.PosL.x) * sin(30.f * gTime);
+    vin.PosL.z *= 0.6f + 0.4f * sin(2.0f * gTime);
+    
 	// Transform to homogeneous clip space.
 	vout.PosH = mul(float4(vin.PosL, 1.0f), gWorldViewProj);
 	
