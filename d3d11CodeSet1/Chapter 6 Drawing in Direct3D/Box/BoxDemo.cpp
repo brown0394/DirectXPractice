@@ -163,7 +163,7 @@ void BoxApp::DrawScene()
 	md3dImmediateContext->IASetVertexBuffers(1, 1, &mBoxVCB, &strideC, &offset);
 	md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 
-	md3dImmediateContext->RSSetState(mRasterState);
+	//md3dImmediateContext->RSSetState(mRasterState);
 	// Set constants
 	XMMATRIX view  = XMLoadFloat4x4(&mView);
 	XMMATRIX proj  = XMLoadFloat4x4(&mProj);

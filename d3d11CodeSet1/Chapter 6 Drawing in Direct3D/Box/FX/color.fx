@@ -26,12 +26,20 @@ struct VertexOut
     float4 Color : COLOR;
 };
 
+RasterizerState WireframeRS
+{
+    FillMode = Wireframe;
+    CullMode = Back;
+    FrontCounterClockwise = false;
+ // Default values used for any properties we do not set.
+};
+
 VertexOut VS(VertexIn vin)
 {
 	VertexOut vout;
 	
-    vin.PosL.xy += 0.5f * sin(vin.PosL.x) * sin(30.f * gTime);
-    vin.PosL.z *= 0.6f + 0.4f * sin(2.0f * gTime);
+    //vin.PosL.xy += 0.5f * sin(vin.PosL.x) * sin(30.f * gTime);
+    //vin.PosL.z *= 0.6f + 0.4f * sin(2.0f * gTime);
     
 	// Transform to homogeneous clip space.
 	vout.PosH = mul(float4(vin.PosL, 1.0f), gWorldViewProj);
@@ -54,5 +62,7 @@ technique11 ColorTech
         SetVertexShader( CompileShader( vs_5_0, VS() ) );
 		SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_5_0, PS() ) );
+
+        SetRasterizerState(WireframeRS);
     }
 }
