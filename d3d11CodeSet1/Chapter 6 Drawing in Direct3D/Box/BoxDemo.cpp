@@ -38,14 +38,14 @@ private:
 	void BuildGeometryBuffers();
 	void BuildFX();
 	void BuildVertexLayout();
+	void BuildRasterizerState();
 
 private:
 	ID3D11Buffer* mBoxVLB;
-	//ID3D11Buffer* mPyrVLB;
 	ID3D11Buffer* mBoxVCB;
-	//ID3D11Buffer* mPyrVCB;
 	ID3D11Buffer* mBoxIB;
-	//ID3D11Buffer* mPyrIB;
+
+	ID3D11RasterizerState* mRasterState;
 
 	ID3DX11Effect* mFX;
 	ID3DX11EffectTechnique* mTech;
@@ -84,7 +84,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
  
 
 BoxApp::BoxApp(HINSTANCE hInstance)
-: D3DApp(hInstance), mBoxVLB(0), mBoxVCB(0), mBoxIB(0), mFX(0), mTech(0), //mPyrVLB(0), mPyrIB(0),
+: D3DApp(hInstance), mBoxVLB(0), mBoxVCB(0), mBoxIB(0), mFX(0), mTech(0),
   mfxWorldViewProj(0), mfxGTime(0), mInputLayout(0), 
   mTheta(1.5f*MathHelper::Pi), mPhi(0.25f*MathHelper::Pi), mRadius(5.0f)
 {
@@ -105,9 +105,7 @@ BoxApp::~BoxApp()
 	ReleaseCOM(mBoxVLB);
 	ReleaseCOM(mBoxVCB);
 	ReleaseCOM(mBoxIB);
-	//ReleaseCOM(mPyrVLB);
-	//ReleaseCOM(mPyrVCB);
-	//ReleaseCOM(mPyrIB);
+	ReleaseCOM(mRasterState);
 	ReleaseCOM(mFX);
 	ReleaseCOM(mInputLayout);
 }
@@ -120,6 +118,7 @@ bool BoxApp::Init()
 	BuildGeometryBuffers();
 	BuildFX();
 	BuildVertexLayout();
+	BuildRasterizerState();
 
 	return true;
 }
@@ -164,6 +163,7 @@ void BoxApp::DrawScene()
 	md3dImmediateContext->IASetVertexBuffers(1, 1, &mBoxVCB, &strideC, &offset);
 	md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 
+	md3dImmediateContext->RSSetState(mRasterState);
 	// Set constants
 	XMMATRIX view  = XMLoadFloat4x4(&mView);
 	XMMATRIX proj  = XMLoadFloat4x4(&mProj);
@@ -289,14 +289,6 @@ void BoxApp::BuildGeometryBuffers()
 		(const float*)&Colors::Green,
 		(const float*)&Colors::Blue,
 	};
-
-	/*XMFLOAT4 pvertexColors[] = {
-	(const float*)&Colors::White,
-	(const float*)&Colors::Black,
-	(const float*)&Colors::Red,
-	(const float*)&Colors::Green,
-	(const float*)&Colors::Blue,
-	};*/
 
     D3D11_BUFFER_DESC vlbd;
     vlbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -431,3 +423,17 @@ void BoxApp::BuildVertexLayout()
 		passDesc.IAInputSignatureSize, &mInputLayout));
 }
  
+void BoxApp::BuildRasterizerState() {
+	D3D11_RASTERIZER_DESC rasterDesc{
+		D3D11_FILL_WIREFRAME,
+		D3D11_CULL_BACK,
+		false,
+		0,
+		0.0f,
+		0.0f,
+		true,
+		false,
+		false
+	};
+	HR(md3dDevice->CreateRasterizerState(&rasterDesc, &mRasterState));
+}
