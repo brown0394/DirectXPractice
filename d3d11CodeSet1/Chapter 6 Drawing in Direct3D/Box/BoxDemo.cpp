@@ -55,6 +55,7 @@ private:
 	ID3D11InputLayout* mInputLayout;
 
 	XMFLOAT4X4 mWorld;
+	XMFLOAT4X4 mPyrWorld;
 	XMFLOAT4X4 mView;
 	XMFLOAT4X4 mProj;
 
@@ -96,6 +97,7 @@ BoxApp::BoxApp(HINSTANCE hInstance)
 	XMStoreFloat4x4(&mWorld, I);
 	XMStoreFloat4x4(&mView, I);
 	XMStoreFloat4x4(&mProj, I);
+	XMStoreFloat4x4(&mPyrWorld, XMMatrixTranslation(3.0f, 0.0f, 0.0f));
 }
 
 BoxApp::~BoxApp()
@@ -161,26 +163,29 @@ void BoxApp::DrawScene()
     md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVLB, &strideL, &offset);
 	md3dImmediateContext->IASetVertexBuffers(1, 1, &mBoxVCB, &strideC, &offset);
 	md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
-	/*md3dImmediateContext->IASetVertexBuffers(1, 1, &mPyrVCB, &strideC, &offset);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mPyrVLB, &strideL, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mPyrIB, DXGI_FORMAT_R32_UINT, 0);*/
+
 	// Set constants
-	XMMATRIX world = XMLoadFloat4x4(&mWorld);
 	XMMATRIX view  = XMLoadFloat4x4(&mView);
 	XMMATRIX proj  = XMLoadFloat4x4(&mProj);
-	XMMATRIX worldViewProj = world*view*proj;
-
-	mfxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
-	mfxGTime->SetFloat(D3DApp::mTimer.TotalTime());
+	XMMATRIX viewProj = view*proj;
+	//mfxGTime->SetFloat(D3DApp::mTimer.TotalTime());
 
     D3DX11_TECHNIQUE_DESC techDesc;
     mTech->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
-        mTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-        
+		XMMATRIX world = XMLoadFloat4x4(&mWorld);
+		XMMATRIX worldViewProj = world * viewProj;
+		mfxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+		mTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		// 36 indices for the box.
 		md3dImmediateContext->DrawIndexed(36, 0, 0);
+		//draw pyramid.
+		world = XMLoadFloat4x4(&mPyrWorld);
+		worldViewProj = world * viewProj;
+		mfxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+		mTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
+		md3dImmediateContext->DrawIndexed(18, 36, 8);
     }
 
 	HR(mSwapChain->Present(0, 0));
@@ -253,6 +258,12 @@ void BoxApp::BuildGeometryBuffers()
 		XMFLOAT3(-1.0f, -1.0f, +1.0f),
 		XMFLOAT3(-1.0f, +1.0f, +1.0f),
 		XMFLOAT3(+1.0f, +1.0f, +1.0f),
+		XMFLOAT3(+1.0f, -1.0f, +1.0f),
+
+		XMFLOAT3(+0.0f, +1.0f, +0.0f),
+		XMFLOAT3(-1.0f, -1.0f, -1.0f),
+		XMFLOAT3(+1.0f, -1.0f, -1.0f),
+		XMFLOAT3(-1.0f, -1.0f, +1.0f),
 		XMFLOAT3(+1.0f, -1.0f, +1.0f)
 	};
 	/*XMFLOAT3 vertexPLocs[] = {
@@ -270,7 +281,13 @@ void BoxApp::BuildGeometryBuffers()
 		(const float*)&Colors::Blue,
 		(const float*)&Colors::Yellow,
 		(const float*)&Colors::Cyan,
-		(const float*)&Colors::Magenta
+		(const float*)&Colors::Magenta,
+
+		(const float*)&Colors::White,
+		(const float*)&Colors::Black,
+		(const float*)&Colors::Red,
+		(const float*)&Colors::Green,
+		(const float*)&Colors::Blue,
 	};
 
 	/*XMFLOAT4 pvertexColors[] = {
@@ -283,7 +300,7 @@ void BoxApp::BuildGeometryBuffers()
 
     D3D11_BUFFER_DESC vlbd;
     vlbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vlbd.ByteWidth = sizeof(XMFLOAT3) * 8;
+    vlbd.ByteWidth = sizeof(XMFLOAT3) * 13;
     vlbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vlbd.CPUAccessFlags = 0;
     vlbd.MiscFlags = 0;
@@ -292,20 +309,9 @@ void BoxApp::BuildGeometryBuffers()
     vlinitData.pSysMem = vertexLocs;
     HR(md3dDevice->CreateBuffer(&vlbd, &vlinitData, &mBoxVLB));
 
-	/*D3D11_BUFFER_DESC pvlbd;
-	pvlbd.Usage = D3D11_USAGE_IMMUTABLE;
-	pvlbd.ByteWidth = sizeof(XMFLOAT3) * 5;
-	pvlbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	pvlbd.CPUAccessFlags = 0;
-	pvlbd.MiscFlags = 0;
-	pvlbd.StructureByteStride = 0;
-	D3D11_SUBRESOURCE_DATA pvlinitData;
-	pvlinitData.pSysMem = vertexPLocs;
-	HR(md3dDevice->CreateBuffer(&pvlbd, &pvlinitData, &mPyrVLB));*/
-
 	D3D11_BUFFER_DESC vcbd;
 	vcbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vcbd.ByteWidth = sizeof(XMFLOAT4) * 8;
+	vcbd.ByteWidth = sizeof(XMFLOAT4) * 13;
 	vcbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vcbd.CPUAccessFlags = 0;
 	vcbd.MiscFlags = 0;
@@ -313,17 +319,6 @@ void BoxApp::BuildGeometryBuffers()
 	D3D11_SUBRESOURCE_DATA vcinitData;
 	vcinitData.pSysMem = vertexColors;
 	HR(md3dDevice->CreateBuffer(&vcbd, &vcinitData, &mBoxVCB));
-
-	/*D3D11_BUFFER_DESC pvcbd;
-	pvcbd.Usage = D3D11_USAGE_IMMUTABLE;
-	pvcbd.ByteWidth = sizeof(XMFLOAT4) * 5;
-	pvcbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	pvcbd.CPUAccessFlags = 0;
-	pvcbd.MiscFlags = 0;
-	pvcbd.StructureByteStride = 0;
-	D3D11_SUBRESOURCE_DATA pvcinitData;
-	pvcinitData.pSysMem = vertexColors;
-	HR(md3dDevice->CreateBuffer(&pvcbd, &pvcinitData, &mPyrVCB));*/
 
 	// Create the index buffer
 
@@ -350,10 +345,8 @@ void BoxApp::BuildGeometryBuffers()
 
 		// bottom face
 		4, 0, 3, 
-		4, 3, 7
-	};
+		4, 3, 7,
 
-	/*UINT pindices[] = {
 		// front face
 		1, 0, 2,
 
@@ -369,11 +362,13 @@ void BoxApp::BuildGeometryBuffers()
 		// bottom face
 		2, 3, 1,
 		3, 2, 4
-	};*/
+	};
+
+
 
 	D3D11_BUFFER_DESC ibd;
     ibd.Usage = D3D11_USAGE_IMMUTABLE;
-    ibd.ByteWidth = sizeof(UINT) * 36;
+    ibd.ByteWidth = sizeof(UINT) * 54;
     ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     ibd.CPUAccessFlags = 0;
     ibd.MiscFlags = 0;
@@ -381,17 +376,6 @@ void BoxApp::BuildGeometryBuffers()
     D3D11_SUBRESOURCE_DATA iinitData;
     iinitData.pSysMem = indices;
     HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mBoxIB));
-
-	/*D3D11_BUFFER_DESC pibd;
-	pibd.Usage = D3D11_USAGE_IMMUTABLE;
-	pibd.ByteWidth = sizeof(UINT) * 18;
-	pibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	pibd.CPUAccessFlags = 0;
-	pibd.MiscFlags = 0;
-	pibd.StructureByteStride = 0;
-	D3D11_SUBRESOURCE_DATA piinitData;
-	piinitData.pSysMem = pindices;
-	HR(md3dDevice->CreateBuffer(&pibd, &piinitData, &mPyrIB));*/
 }
  
 void BoxApp::BuildFX()
@@ -428,7 +412,7 @@ void BoxApp::BuildFX()
 
 	mTech    = mFX->GetTechniqueByName("ColorTech");
 	mfxWorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
-	mfxGTime = mFX->GetVariableByName("gTime")->AsScalar();
+	//mfxGTime = mFX->GetVariableByName("gTime")->AsScalar();
 }
 
 void BoxApp::BuildVertexLayout()
