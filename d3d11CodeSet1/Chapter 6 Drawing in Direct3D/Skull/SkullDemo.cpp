@@ -115,7 +115,14 @@ bool SkullApp::Init()
 {
 	if(!D3DApp::Init())
 		return false;
-
+	D3D11_VIEWPORT viewport;
+	viewport.TopLeftX = 100.0f;
+	viewport.TopLeftY = 50.0f;
+	viewport.Width = 200.0f;
+	viewport.Height = 150.0f;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	md3dImmediateContext->RSSetViewports(1, &viewport);
 	BuildGeometryBuffers();
 	BuildFX();
 	BuildVertexLayout();
