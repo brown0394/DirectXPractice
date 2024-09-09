@@ -35,7 +35,7 @@ public:
 	void OnMouseDown(WPARAM btnState, int x, int y);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
-
+	void OnKeyDown(WPARAM btnState);
 private:
 	float GetHillHeight(float x, float z)const;
 	XMFLOAT3 GetHillNormal(float x, float z)const;
@@ -87,6 +87,8 @@ private:
 	float mRadius;
 
 	POINT mLastMousePos;
+
+	float mSpotChangeVal;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -111,7 +113,7 @@ LightingApp::LightingApp(HINSTANCE hInstance)
   mFX(0), mTech(0), mfxWorld(0), mfxWorldInvTranspose(0), mfxEyePosW(0), 
   mfxDirLight(0), mfxPointLight(0), mfxSpotLight(0), mfxMaterial(0),
   mfxWorldViewProj(0), 
-  mInputLayout(0), mEyePosW(0.0f, 0.0f, 0.0f), mTheta(1.5f*MathHelper::Pi), mPhi(0.1f*MathHelper::Pi), mRadius(80.0f)
+  mInputLayout(0), mEyePosW(0.0f, 0.0f, 0.0f), mTheta(1.5f*MathHelper::Pi), mPhi(0.1f*MathHelper::Pi), mRadius(80.0f), mSpotChangeVal(8.0f)
 {
 	mMainWndCaption = L"Lighting Demo";
 	
@@ -128,22 +130,22 @@ LightingApp::LightingApp(HINSTANCE hInstance)
 	XMStoreFloat4x4(&mWavesWorld, wavesOffset);
 
 	// Directional light.
-	mDirLight.Ambient  = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);//XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLight.Diffuse  = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);//XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mDirLight.Specular = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);//XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	mDirLight.Ambient  = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLight.Diffuse  = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	mDirLight.Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mDirLight.Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
  
 	// Point light--position is changed every frame to animate in UpdateScene function.
-	mPointLight.Ambient  = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);//XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-	mPointLight.Diffuse  = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);//XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	mPointLight.Specular = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);//XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Ambient  = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mPointLight.Diffuse  = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mPointLight.Att      = XMFLOAT3(0.0f, 0.1f, 0.0f);
 	mPointLight.Range    = 25.0f;
 
 	// Spot light--position and direction changed every frame to animate in UpdateScene function.
-	mSpotLight.Ambient  = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);//XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mSpotLight.Diffuse  = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);//XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-	mSpotLight.Specular = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);//XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	mSpotLight.Ambient  = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	mSpotLight.Diffuse  = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+	mSpotLight.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mSpotLight.Att      = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	mSpotLight.Spot     = 96.0f;
 	mSpotLight.Range    = 10000.0f;
@@ -532,4 +534,14 @@ void LightingApp::BuildVertexLayout()
     mTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(md3dDevice->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature, 
 		passDesc.IAInputSignatureSize, &mInputLayout));
+}
+
+void LightingApp::OnKeyDown(WPARAM btnState) {
+	if (btnState == VK_LEFT) {
+		mSpotLight.Spot -= mSpotChangeVal;
+		if (mSpotLight.Spot <= 0) mSpotLight.Spot = 1.0f;
+	}
+	else if (btnState == VK_RIGHT) {
+		mSpotLight.Spot += mSpotChangeVal;
+	}
 }
