@@ -17,6 +17,8 @@
 #include "Effects.h"
 #include "Vertex.h"
 
+#define TEXTUREARRAYSIZE 2
+
 class CrateApp : public D3DApp
 {
 public:
@@ -39,7 +41,7 @@ private:
 	ID3D11Buffer* mBoxVB;
 	ID3D11Buffer* mBoxIB;
 
-	ID3D11ShaderResourceView* mDiffuseMapSRV;
+	ID3D11ShaderResourceView* mDiffuseMapSRV[TEXTUREARRAYSIZE];
 
 	DirectionalLight mDirLights[3];
 	Material mBoxMat;
@@ -81,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
  
 
 CrateApp::CrateApp(HINSTANCE hInstance)
-: D3DApp(hInstance), mBoxVB(0), mBoxIB(0), mDiffuseMapSRV(0), mEyePosW(0.0f, 0.0f, 0.0f), 
+	: D3DApp(hInstance), mBoxVB(0), mBoxIB(0), mDiffuseMapSRV{ 0 }, mEyePosW(0.0f, 0.0f, 0.0f),
   mTheta(1.3f*MathHelper::Pi), mPhi(0.4f*MathHelper::Pi), mRadius(2.5f)
 {
 	mMainWndCaption = L"Crate Demo";
@@ -114,8 +116,9 @@ CrateApp::~CrateApp()
 {
 	ReleaseCOM(mBoxVB);
 	ReleaseCOM(mBoxIB);
-	ReleaseCOM(mDiffuseMapSRV);
-
+	for (ID3D11ShaderResourceView*& dm : mDiffuseMapSRV) {
+		ReleaseCOM(dm);
+	}
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll();
 }
@@ -129,9 +132,10 @@ bool CrateApp::Init()
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 
-	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice, 
-		L"Textures/WoodCrate01.dds", 0, 0, &mDiffuseMapSRV, 0 ));
- 
+	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
+		L"Textures/flare.dds", 0, 0, &mDiffuseMapSRV[0], 0));
+	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
+		L"Textures/flarealpha.dds", 0, 0, &mDiffuseMapSRV[1], 0));
 	BuildGeometryBuffers();
 
 	return true;
@@ -201,7 +205,7 @@ void CrateApp::DrawScene()
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
 		Effects::BasicFX->SetMaterial(mBoxMat);
-		Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
+		Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV, TEXTUREARRAYSIZE);
 
 		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);

@@ -26,7 +26,7 @@ cbuffer cbPerObject
 }; 
 
 // Nonnumeric values cannot be added to a cbuffer.
-Texture2D gDiffuseMap;
+Texture2D gDiffuseMap[2];
 
 SamplerState samAnisotropic
 {
@@ -88,8 +88,13 @@ float4 PS(VertexOut pin, uniform int gLightCount, uniform bool gUseTexure) : SV_
     if(gUseTexure)
 	{
 		// Sample texture.
-		texColor = gDiffuseMap.Sample( samAnisotropic, pin.Tex );
-	}
+        for (int i = 0; i < 2; ++i)
+        {
+            texColor *= gDiffuseMap[i].Sample(samAnisotropic, pin.Tex);
+        }
+        //texColor *= 2.0f;
+        texColor = saturate(texColor);
+    }
 	 
 	//
 	// Lighting.
