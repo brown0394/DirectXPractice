@@ -1,0 +1,2 @@
+^C:\USERS\SUNGC\DOCUMENTS\GITHUB\DIRECTXPRACTICE\D3D11CODESET1\CHAPTER 6 DRAWING IN DIRECT3D\SHAPES\FX\COLOR.FX
+fxc /T fx_5_0 /Fo "FX\\color.fxo" "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 6 Drawing in Direct3D\Shapes\FX\color.fx"

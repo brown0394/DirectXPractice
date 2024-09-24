@@ -28,7 +28,7 @@ struct VertexOut
 
 RasterizerState WireframeRS
 {
-    FillMode = Wireframe;
+    FillMode = WireFrame;
     CullMode = Back;
     FrontCounterClockwise = false;
  // Default values used for any properties we do not set.
@@ -63,6 +63,6 @@ technique11 ColorTech
 		SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_5_0, PS() ) );
 
-        SetRasterizerState(WireframeRS);
+        //SetRasterizerState(WireframeRS);
     }
 }

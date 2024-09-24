@@ -76,28 +76,17 @@ void ComputeDirectionalLight(Material mat, DirectionalLight L,
 	// the line of site of the light.
 	
 	float diffuseFactor = dot(lightVec, normal);
-    if (diffuseFactor <= 0)
-    {
-        diffuseFactor = 0.4;
-    }
-    else if (diffuseFactor <= 0.5)
-    {
-        diffuseFactor = 0.6;
-    }
-    else
-    {
-        diffuseFactor = 1.0;
-    }
+
 	// Flatten to avoid dynamic branching.
-	//[flatten]
-	//if( diffuseFactor > 0.0f )
-//	{
+	[flatten]
+	if( diffuseFactor > 0.0f )
+	{
 		float3 v         = reflect(-lightVec, normal);
 		float specFactor = pow(max(dot(v, toEye), 0.0f), mat.Specular.w);
 					
 		diffuse = diffuseFactor * mat.Diffuse * L.Diffuse;
 		spec    = specFactor * mat.Specular * L.Specular;
-//	}
+	}
 }
 
 //---------------------------------------------------------------------------------------
@@ -136,20 +125,8 @@ void ComputePointLight(Material mat, PointLight L, float3 pos, float3 normal, fl
 
 	// Flatten to avoid dynamic branching.
 	[flatten]
-	if( diffuseFactor >= 0.0f )
+	if( diffuseFactor > 0.0f )
 	{
-        if (diffuseFactor <= 0.1)
-        {
-            diffuseFactor = 0.0;
-        }
-        else if (diffuseFactor <= 0.8)
-        {
-            diffuseFactor = 0.5;
-        }
-        else
-        {
-            diffuseFactor = 0.8;
-        }
 		float3 v         = reflect(-lightVec, normal);
 		float specFactor = pow(max(dot(v, toEye), 0.0f), mat.Specular.w);
 					

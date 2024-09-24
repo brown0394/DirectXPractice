@@ -1,12 +1,27 @@
 //
 // FX Version: fx_5_0
 //
-// 1 local buffer(s)
+// 2 local buffer(s)
 //
 cbuffer cbPerObject
 {
     float4x4 gWorldViewProj;            // Offset:    0, size:   64
 }
+
+cbuffer cbPerFrame
+{
+    float   gTime;                      // Offset:    0, size:    4
+}
+
+//
+// 1 local object(s)
+//
+RasterizerState WireframeRS
+{
+    FillMode = uint(WIREFRAME /* 2 */);
+    CullMode = uint(BACK /* 3 */);
+    FrontCounterClockwise = bool(FALSE /* false */);
+};
 
 //
 // 1 groups(s)

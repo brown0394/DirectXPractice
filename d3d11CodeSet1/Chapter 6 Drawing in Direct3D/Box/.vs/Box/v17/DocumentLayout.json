@@ -3,23 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}|Box.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dx11effect.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\sungc\\AppData\\Local\\Temp\\c2a2a1fd-4574-434a-a879-36ad040eca94_d3d11CodeSet1.zip.a94\\Common\\d3dx11effect.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}|Box.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\BoxDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}|Box.vcxproj|solutionrelative:BoxDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\d3d11_1.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi1_2.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}|Box.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\FX\\color.fx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}|Box.vcxproj|solutionrelative:FX\\color.fx||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,76 +27,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "d3dx11effect.h",
-              "DocumentMoniker": "C:\\Users\\sungc\\AppData\\Local\\Temp\\c2a2a1fd-4574-434a-a879-36ad040eca94_d3d11CodeSet1.zip.a94\\Common\\d3dx11effect.h",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\AppData\\Local\\Temp\\c2a2a1fd-4574-434a-a879-36ad040eca94_d3d11CodeSet1.zip.a94\\Common\\d3dx11effect.h",
-              "ToolTip": "C:\\Users\\sungc\\AppData\\Local\\Temp\\c2a2a1fd-4574-434a-a879-36ad040eca94_d3d11CodeSet1.zip.a94\\Common\\d3dx11effect.h [\uC77D\uAE30 \uC804\uC6A9]",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\AppData\\Local\\Temp\\c2a2a1fd-4574-434a-a879-36ad040eca94_d3d11CodeSet1.zip.a94\\Common\\d3dx11effect.h [\uC77D\uAE30 \uC804\uC6A9]",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-27T04:27:42.514Z",
-              "EditorCaption": " [\uC77D\uAE30 \uC804\uC6A9]"
+              "Title": "color.fx",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\FX\\color.fx",
+              "RelativeDocumentMoniker": "FX\\color.fx",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\FX\\color.fx",
+              "RelativeToolTip": "FX\\color.fx",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAEEAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-08-28T06:02:04.215Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "d3dx11effect.h",
-              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dx11effect.h",
-              "RelativeDocumentMoniker": "..\\..\\Common\\d3dx11effect.h",
-              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dx11effect.h",
-              "RelativeToolTip": "..\\..\\Common\\d3dx11effect.h",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABYAAAApAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-27T04:25:19.119Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "dxgi.h",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi.h",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi.h",
-              "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi.h",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi.h",
-              "ViewState": "AQIAAEEMAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-27T04:24:41.059Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "d3d11_1.h",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\d3d11_1.h",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\d3d11_1.h",
-              "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\d3d11_1.h",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\d3d11_1.h",
-              "ViewState": "AQIAAJIKAAAAAAAAAADgv6IKAAAXAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-27T04:23:33.594Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "dxgi1_2.h",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi1_2.h",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi1_2.h",
-              "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi1_2.h",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\shared\\dxgi1_2.h",
-              "ViewState": "AQIAAGYAAAAAAAAAAAAAAHEAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-27T04:23:04.885Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "BoxDemo.cpp",
               "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\BoxDemo.cpp",
               "RelativeDocumentMoniker": "BoxDemo.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 6 Drawing in Direct3D\\Box\\BoxDemo.cpp",
               "RelativeToolTip": "BoxDemo.cpp",
-              "ViewState": "AQIAACkBAAAAAAAAAAAAADUBAAA3AAAA",
+              "ViewState": "AQIAAP4AAAAAAAAAAAAAAAkBAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-26T06:38:53.539Z"
+              "WhenOpened": "2024-08-26T06:38:53.539Z",
+              "EditorCaption": ""
             }
           ]
         }

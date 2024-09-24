@@ -82,6 +82,8 @@ private:
 	float mRadius;
 
 	POINT mLastMousePos;
+
+	D3D11_RECT mScissorRect;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -158,8 +160,11 @@ bool ShapesApp::Init()
 	wireframeDesc.CullMode = D3D11_CULL_BACK;
 	wireframeDesc.FrontCounterClockwise = false;
 	wireframeDesc.DepthClipEnable = true;
+	//wireframeDesc.ScissorEnable = true;
 
 	HR(md3dDevice->CreateRasterizerState(&wireframeDesc, &mWireframeRS));
+
+	mScissorRect = { 100, 100, 400, 400 };
 
 	return true;
 }
@@ -203,6 +208,7 @@ void ShapesApp::DrawScene()
     md3dImmediateContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
 	md3dImmediateContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
 
+	md3dImmediateContext->RSSetScissorRects(1, &mScissorRect);
 	// Set constants
 	
 	XMMATRIX view  = XMLoadFloat4x4(&mView);
@@ -308,8 +314,8 @@ void ShapesApp::BuildGeometryBuffers()
 	GeometryGenerator geoGen;
 	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
 	geoGen.CreateGrid(20.0f, 30.0f, 60, 40, grid);
-	geoGen.CreateSphere(0.5f, 20, 20, sphere);
-	//geoGen.CreateGeosphere(0.5f, 2, sphere);
+	//geoGen.CreateSphere(0.5f, 20, 20, sphere);
+	geoGen.CreateGeosphere(0.5f, 2, sphere);
 	geoGen.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20, cylinder);
 
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
