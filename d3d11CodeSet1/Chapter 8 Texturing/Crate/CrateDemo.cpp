@@ -63,6 +63,7 @@ private:
 	float mRadius;
 
 	POINT mLastMousePos;
+	float mRotationAngle;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -84,7 +85,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 CrateApp::CrateApp(HINSTANCE hInstance)
 	: D3DApp(hInstance), mBoxVB(0), mBoxIB(0), mDiffuseMapSRV{ 0 }, mEyePosW(0.0f, 0.0f, 0.0f),
-  mTheta(1.3f*MathHelper::Pi), mPhi(0.4f*MathHelper::Pi), mRadius(2.5f)
+	mTheta(1.3f * MathHelper::Pi), mPhi(0.4f * MathHelper::Pi), mRadius(2.5f), mRotationAngle(1.0f)
 {
 	mMainWndCaption = L"Crate Demo";
 	
@@ -131,7 +132,6 @@ bool CrateApp::Init()
 	// Must init Effects first since InputLayouts depend on shader signatures.
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
-
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
 		L"Textures/flare.dds", 0, 0, &mDiffuseMapSRV[0], 0));
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
@@ -185,9 +185,10 @@ void CrateApp::DrawScene()
 	// Set per frame constants.
 	Effects::BasicFX->SetDirLights(mDirLights);
 	Effects::BasicFX->SetEyePosW(mEyePosW);
- 
-	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light2TexTech;
 
+
+	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light2TexTech;
+	
     D3DX11_TECHNIQUE_DESC techDesc;
 	activeTech->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
@@ -206,7 +207,9 @@ void CrateApp::DrawScene()
 		Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
 		Effects::BasicFX->SetMaterial(mBoxMat);
 		Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV, TEXTUREARRAYSIZE);
-
+		mRotationAngle += 0.01f;
+		if (mRotationAngle > 360.0f) mRotationAngle = 0.0f;
+		Effects::BasicFX->SetRotation(XMConvertToRadians(mRotationAngle));
 		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
     }

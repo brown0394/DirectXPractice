@@ -25,6 +25,10 @@ cbuffer cbPerObject
 	Material gMaterial;
 }; 
 
+cbuffer cbRoation
+{
+    float gRotationAngle;
+}; 
 // Nonnumeric values cannot be added to a cbuffer.
 Texture2D gDiffuseMap[2];
 
@@ -33,8 +37,8 @@ SamplerState samAnisotropic
 	Filter = ANISOTROPIC;
 	MaxAnisotropy = 4;
 
-	AddressU = WRAP;
-	AddressV = WRAP;
+    AddressU = BORDER; //WRAP;
+    AddressV = BORDER;//WRAP;
 };
 
 struct VertexIn
@@ -87,10 +91,18 @@ float4 PS(VertexOut pin, uniform int gLightCount, uniform bool gUseTexure) : SV_
     float4 texColor = float4(1, 1, 1, 1);
     if(gUseTexure)
 	{
+        float2 rotOffset = float2(0.5, 0.5);
+        float2 texCoord = pin.Tex - rotOffset;
+        float2 rotatedCoord = 0.0;
+        float cosTheta = cos(gRotationAngle);
+        float sinTheta = sin(gRotationAngle);
+        rotatedCoord.x = cosTheta * texCoord.x - sinTheta * texCoord.y;
+        rotatedCoord.y = sinTheta * texCoord.x + cosTheta * texCoord.y;
+        rotatedCoord += rotOffset;
 		// Sample texture.
         for (int i = 0; i < 2; ++i)
         {
-            texColor *= gDiffuseMap[i].Sample(samAnisotropic, pin.Tex);
+            texColor *= gDiffuseMap[i].Sample(samAnisotropic, rotatedCoord);
         }
         //texColor *= 2.0f;
         texColor = saturate(texColor);

@@ -41,6 +41,7 @@ public:
 	void SetDirLights(const DirectionalLight* lights)   { DirLights->SetRawValue(lights, 0, 3*sizeof(DirectionalLight)); }
 	void SetMaterial(const Material& mat)               { Mat->SetRawValue(&mat, 0, sizeof(Material)); }
 	void SetDiffuseMap(ID3D11ShaderResourceView** tex, int size)   { DiffuseMap->SetResourceArray(tex, 0, size); }
+	void SetRotation(const float angle) { rotationAngle->SetFloat(angle); }
 
 	ID3DX11EffectTechnique* Light1Tech;
 	ID3DX11EffectTechnique* Light2Tech;
@@ -60,6 +61,7 @@ public:
 	ID3DX11EffectVariable* Mat;
 
 	ID3DX11EffectShaderResourceVariable* DiffuseMap;
+	ID3DX11EffectScalarVariable* rotationAngle;
 };
 #pragma endregion
 
