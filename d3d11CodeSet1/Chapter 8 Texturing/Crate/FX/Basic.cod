@@ -10,6 +10,7 @@ cbuffer cbPerFrame
     float   gFogStart;                  // Offset:  204, size:    4
     float   gFogRange;                  // Offset:  208, size:    4
     float4  gFogColor;                  // Offset:  224, size:   16
+    float   gRotationAngle;             // Offset:  240, size:    4
 }
 
 cbuffer cbPerObject
@@ -24,13 +25,13 @@ cbuffer cbPerObject
 //
 // 2 local object(s)
 //
-Texture2D gDiffuseMap[2];
+Texture2D gDiffuseMap;
 SamplerState samAnisotropic
 {
     Filter   = uint(ANISOTROPIC /* 85 */);
     MaxAnisotropy = uint(4);
-    AddressU = uint(WRAP /* 1 */);
-    AddressV = uint(WRAP /* 1 */);
+    AddressU = uint(BORDER /* 4 */);
+    AddressV = uint(BORDER /* 4 */);
 };
 
 //
@@ -120,31 +121,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -178,6 +179,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4 [unused]
                 //
                 // }
                 //
@@ -243,35 +245,35 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -328,29 +330,29 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
@@ -440,31 +442,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -498,6 +500,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4 [unused]
                 //
                 // }
                 //
@@ -563,35 +566,35 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -648,21 +651,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -717,29 +720,29 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
@@ -829,31 +832,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -887,6 +890,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4 [unused]
                 //
                 // }
                 //
@@ -952,35 +956,35 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -1037,21 +1041,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -1106,21 +1110,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -1175,29 +1179,29 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
@@ -1287,31 +1291,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -1327,6 +1331,27 @@ fxgroup
                 //
                 //
                 // Buffer Definitions: 
+                //
+                // cbuffer cbPerFrame
+                // {
+                //
+                //   struct DirectionalLight
+                //   {
+                //       
+                //       float4 Ambient;                // Offset:    0
+                //       float4 Diffuse;                // Offset:   16
+                //       float4 Specular;               // Offset:   32
+                //       float3 Direction;              // Offset:   48
+                //       float pad;                     // Offset:   60
+                //
+                //   } gDirLights[3];                   // Offset:    0 Size:   192 [unused]
+                //   float3 gEyePosW;                   // Offset:  192 Size:    12 [unused]
+                //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
+                //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
+                //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4
+                //
+                // }
                 //
                 // cbuffer cbPerObject
                 // {
@@ -1354,9 +1379,9 @@ fxgroup
                 // Name                                 Type  Format         Dim      HLSL Bind  Count
                 // ------------------------------ ---------- ------- ----------- -------------- ------
                 // samAnisotropic                    sampler      NA          NA             s0      1 
-                // gDiffuseMap[0]                    texture  float4          2d             t0      1 
-                // gDiffuseMap[1]                    texture  float4          2d             t1      1 
-                // cbPerObject                       cbuffer      NA          NA            cb0      1 
+                // gDiffuseMap                       texture  float4          2d             t0      1 
+                // cbPerFrame                        cbuffer      NA          NA            cb0      1 
+                // cbPerObject                       cbuffer      NA          NA            cb1      1 
                 //
                 //
                 //
@@ -1378,13 +1403,13 @@ fxgroup
                 //
                 ps_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
-                dcl_constantbuffer CB0[18], immediateIndexed
+                dcl_constantbuffer CB0[16], immediateIndexed
+                dcl_constantbuffer CB1[18], immediateIndexed
                 dcl_sampler s0, mode_default
                 dcl_resource_texture2d (float,float,float,float) t0
-                dcl_resource_texture2d (float,float,float,float) t1
                 dcl_input_ps linear v3.xy
                 dcl_output o0.xyzw
-                dcl_temps 2
+                dcl_temps 4
                 //
                 // Initial variable locations:
                 //   v0.x <- pin.PosH.x; v0.y <- pin.PosH.y; v0.z <- pin.PosH.z; v0.w <- pin.PosH.w; 
@@ -1393,30 +1418,65 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 87 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 88 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 itof r0.xyzw, l(1, 1, 1, 1)  // r0.x <- texColor.x; r0.y <- texColor.y; r0.z <- texColor.z; r0.w <- texColor.w
                 
-                #line 93
-                sample_indexable(texture2d)(float,float,float,float) r1.xyzw, v3.xyxx, t0.xyzw, s0
-                mul r0.xyzw, r0.xyzw, r1.xyzw
-                sample_indexable(texture2d)(float,float,float,float) r1.xyzw, v3.xyxx, t1.xyzw, s0
-                mul r0.xyzw, r0.xyzw, r1.xyzw
+                #line 91
+                mov r1.xy, v3.xyxx  // r1.x <- rotatedCoord.x; r1.y <- rotatedCoord.y
+                
+                #line 92
+                lt r1.z, l(0.000000), cb0[15].x
+                if_nz r1.z
+                
+                #line 94
+                  mov r1.zw, l(0,0,0.500000,0.500000)  // r1.z <- rotOffset.x; r1.w <- rotOffset.y
+                
+                #line 95
+                  mov r2.xy, -r1.zwzz
+                  add r2.xy, r1.xyxx, r2.xyxx  // r2.x <- texCoord.x; r2.y <- texCoord.y
                 
                 #line 96
+                  sincos null, r2.z, cb0[15].x  // r2.z <- cosTheta
+                
+                #line 97
+                  sincos r2.w, null, cb0[15].x  // r2.w <- sinTheta
+                
+                #line 98
+                  mul r3.x, r2.x, r2.z
+                  mul r3.y, r2.y, r2.w
+                  mov r3.y, -r3.y
+                  add r3.x, r3.y, r3.x  // r3.x <- rotatedCoord.x
+                
+                #line 99
+                  mul r2.x, r2.x, r2.w
+                  mul r2.y, r2.y, r2.z
+                  add r3.y, r2.y, r2.x  // r3.y <- rotatedCoord.y
+                
+                #line 100
+                  add r1.xy, r1.zwzz, r3.xyxx  // r1.x <- rotatedCoord.x; r1.y <- rotatedCoord.y
+                
+                #line 101
+                endif 
+                
+                #line 103
+                sample_indexable(texture2d)(float,float,float,float) r1.xyzw, r1.xyxx, t0.xyzw, s0
+                mul r0.xyzw, r0.xyzw, r1.xyzw
+                
+                #line 105
                 max r0.xyzw, r0.xyzw, l(0.000000, 0.000000, 0.000000, 0.000000)
                 min r0.xyzw, r0.xyzw, l(1.000000, 1.000000, 1.000000, 1.000000)  // r0.x <- texColor.x; r0.y <- texColor.y; r0.z <- texColor.z; r0.w <- texColor.w
                 
-                #line 103
+                #line 112
                 mov r0.xyz, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
-                mul r0.w, r0.w, cb0[17].w  // r0.w <- litColor.w
+                #line 138
+                mul r0.w, r0.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 12 instruction slots used
+                // Approximately 27 instruction slots used
                             
             };
         }
@@ -1502,31 +1562,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -1560,6 +1620,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4
                 //
                 // }
                 //
@@ -1589,8 +1650,7 @@ fxgroup
                 // Name                                 Type  Format         Dim      HLSL Bind  Count
                 // ------------------------------ ---------- ------- ----------- -------------- ------
                 // samAnisotropic                    sampler      NA          NA             s0      1 
-                // gDiffuseMap[0]                    texture  float4          2d             t0      1 
-                // gDiffuseMap[1]                    texture  float4          2d             t1      1 
+                // gDiffuseMap                       texture  float4          2d             t0      1 
                 // cbPerFrame                        cbuffer      NA          NA            cb0      1 
                 // cbPerObject                       cbuffer      NA          NA            cb1      1 
                 //
@@ -1614,11 +1674,10 @@ fxgroup
                 //
                 ps_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
-                dcl_constantbuffer CB0[13], immediateIndexed
+                dcl_constantbuffer CB0[16], immediateIndexed
                 dcl_constantbuffer CB1[19], immediateIndexed
                 dcl_sampler s0, mode_default
                 dcl_resource_texture2d (float,float,float,float) t0
-                dcl_resource_texture2d (float,float,float,float) t1
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
@@ -1632,45 +1691,80 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 93
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t0.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t1.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
+                #line 91
+                mov r3.xy, v3.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 92
+                lt r0.w, l(0.000000), cb0[15].x
+                if_nz r0.w
+                
+                #line 94
+                  mov r3.zw, l(0,0,0.500000,0.500000)  // r3.z <- rotOffset.x; r3.w <- rotOffset.y
+                
+                #line 95
+                  mov r4.xy, -r3.zwzz
+                  add r4.xy, r3.xyxx, r4.xyxx  // r4.x <- texCoord.x; r4.y <- texCoord.y
                 
                 #line 96
+                  sincos null, r0.w, cb0[15].x  // r0.w <- cosTheta
+                
+                #line 97
+                  sincos r1.w, null, cb0[15].x  // r1.w <- sinTheta
+                
+                #line 98
+                  mul r4.z, r4.x, r0.w
+                  mul r4.w, r4.y, r1.w
+                  mov r4.w, -r4.w
+                  add r5.x, r4.w, r4.z  // r5.x <- rotatedCoord.x
+                
+                #line 99
+                  mul r1.w, r4.x, r1.w
+                  mul r0.w, r4.y, r0.w
+                  add r5.y, r0.w, r1.w  // r5.y <- rotatedCoord.y
+                
+                #line 100
+                  add r3.xy, r3.zwzz, r5.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 101
+                endif 
+                
+                #line 103
+                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, r3.xyxx, t0.xyzw, s0
+                mul r2.xyzw, r2.xyzw, r3.xyzw
+                
+                #line 105
                 max r2.xyzw, r2.xyzw, l(0.000000, 0.000000, 0.000000, 0.000000)
                 min r2.xyzw, r2.xyzw, l(1.000000, 1.000000, 1.000000, 1.000000)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -1727,33 +1821,33 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 64 instruction slots used
+                // Approximately 79 instruction slots used
                             
             };
         }
@@ -1839,31 +1933,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -1897,6 +1991,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4
                 //
                 // }
                 //
@@ -1926,8 +2021,7 @@ fxgroup
                 // Name                                 Type  Format         Dim      HLSL Bind  Count
                 // ------------------------------ ---------- ------- ----------- -------------- ------
                 // samAnisotropic                    sampler      NA          NA             s0      1 
-                // gDiffuseMap[0]                    texture  float4          2d             t0      1 
-                // gDiffuseMap[1]                    texture  float4          2d             t1      1 
+                // gDiffuseMap                       texture  float4          2d             t0      1 
                 // cbPerFrame                        cbuffer      NA          NA            cb0      1 
                 // cbPerObject                       cbuffer      NA          NA            cb1      1 
                 //
@@ -1951,11 +2045,10 @@ fxgroup
                 //
                 ps_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
-                dcl_constantbuffer CB0[13], immediateIndexed
+                dcl_constantbuffer CB0[16], immediateIndexed
                 dcl_constantbuffer CB1[19], immediateIndexed
                 dcl_sampler s0, mode_default
                 dcl_resource_texture2d (float,float,float,float) t0
-                dcl_resource_texture2d (float,float,float,float) t1
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
@@ -1969,45 +2062,80 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 93
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t0.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t1.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
+                #line 91
+                mov r3.xy, v3.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 92
+                lt r0.w, l(0.000000), cb0[15].x
+                if_nz r0.w
+                
+                #line 94
+                  mov r3.zw, l(0,0,0.500000,0.500000)  // r3.z <- rotOffset.x; r3.w <- rotOffset.y
+                
+                #line 95
+                  mov r4.xy, -r3.zwzz
+                  add r4.xy, r3.xyxx, r4.xyxx  // r4.x <- texCoord.x; r4.y <- texCoord.y
                 
                 #line 96
+                  sincos null, r0.w, cb0[15].x  // r0.w <- cosTheta
+                
+                #line 97
+                  sincos r1.w, null, cb0[15].x  // r1.w <- sinTheta
+                
+                #line 98
+                  mul r4.z, r4.x, r0.w
+                  mul r4.w, r4.y, r1.w
+                  mov r4.w, -r4.w
+                  add r5.x, r4.w, r4.z  // r5.x <- rotatedCoord.x
+                
+                #line 99
+                  mul r1.w, r4.x, r1.w
+                  mul r0.w, r4.y, r0.w
+                  add r5.y, r0.w, r1.w  // r5.y <- rotatedCoord.y
+                
+                #line 100
+                  add r3.xy, r3.zwzz, r5.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 101
+                endif 
+                
+                #line 103
+                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, r3.xyxx, t0.xyzw, s0
+                mul r2.xyzw, r2.xyzw, r3.xyzw
+                
+                #line 105
                 max r2.xyzw, r2.xyzw, l(0.000000, 0.000000, 0.000000, 0.000000)
                 min r2.xyzw, r2.xyzw, l(1.000000, 1.000000, 1.000000, 1.000000)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -2064,21 +2192,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -2133,33 +2261,33 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 101 instruction slots used
+                // Approximately 116 instruction slots used
                             
             };
         }
@@ -2245,31 +2373,31 @@ fxgroup
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
                 //   o0.x <- <VS return value>.PosH.x; o0.y <- <VS return value>.PosH.y; o0.z <- <VS return value>.PosH.z; o0.w <- <VS return value>.PosH.w
                 //
-                #line 60 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 61 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r0.xyz, v0.xyzx
                 mov r0.w, l(1.000000)
                 dp4 r1.x, r0.xyzw, cb0[0].xyzw  // r1.x <- vout.PosW.x
                 dp4 r1.y, r0.xyzw, cb0[1].xyzw  // r1.y <- vout.PosW.y
                 dp4 r1.z, r0.xyzw, cb0[2].xyzw  // r1.z <- vout.PosW.z
                 
-                #line 61
+                #line 62
                 dp3 r2.x, v1.xyzx, cb0[4].xyzx  // r2.x <- vout.NormalW.x
                 dp3 r2.y, v1.xyzx, cb0[5].xyzx  // r2.y <- vout.NormalW.y
                 dp3 r2.z, v1.xyzx, cb0[6].xyzx  // r2.z <- vout.NormalW.z
                 
-                #line 64
+                #line 65
                 dp4 r3.x, r0.xyzw, cb0[8].xyzw  // r3.x <- vout.PosH.x
                 dp4 r3.y, r0.xyzw, cb0[9].xyzw  // r3.y <- vout.PosH.y
                 dp4 r3.z, r0.xyzw, cb0[10].xyzw  // r3.z <- vout.PosH.z
                 dp4 r3.w, r0.xyzw, cb0[11].xyzw  // r3.w <- vout.PosH.w
                 
-                #line 67
+                #line 68
                 mov r0.xy, v2.xyxx
                 mov r0.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r0.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r0.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
                 
-                #line 69
+                #line 70
                 mov o0.xyzw, r3.xyzw
                 mov o1.xyz, r1.xyzx
                 mov o2.xyz, r2.xyzx
@@ -2303,6 +2431,7 @@ fxgroup
                 //   float gFogStart;                   // Offset:  204 Size:     4 [unused]
                 //   float gFogRange;                   // Offset:  208 Size:     4 [unused]
                 //   float4 gFogColor;                  // Offset:  224 Size:    16 [unused]
+                //   float gRotationAngle;              // Offset:  240 Size:     4
                 //
                 // }
                 //
@@ -2332,8 +2461,7 @@ fxgroup
                 // Name                                 Type  Format         Dim      HLSL Bind  Count
                 // ------------------------------ ---------- ------- ----------- -------------- ------
                 // samAnisotropic                    sampler      NA          NA             s0      1 
-                // gDiffuseMap[0]                    texture  float4          2d             t0      1 
-                // gDiffuseMap[1]                    texture  float4          2d             t1      1 
+                // gDiffuseMap                       texture  float4          2d             t0      1 
                 // cbPerFrame                        cbuffer      NA          NA            cb0      1 
                 // cbPerObject                       cbuffer      NA          NA            cb1      1 
                 //
@@ -2357,11 +2485,10 @@ fxgroup
                 //
                 ps_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
-                dcl_constantbuffer CB0[13], immediateIndexed
+                dcl_constantbuffer CB0[16], immediateIndexed
                 dcl_constantbuffer CB1[19], immediateIndexed
                 dcl_sampler s0, mode_default
                 dcl_resource_texture2d (float,float,float,float) t0
-                dcl_resource_texture2d (float,float,float,float) t1
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
@@ -2375,45 +2502,80 @@ fxgroup
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
-                #line 75 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 76 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 dp3 r0.x, v2.xyzx, v2.xyzx
                 rsq r0.x, r0.x
                 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- pin.NormalW.x; r0.y <- pin.NormalW.y; r0.z <- pin.NormalW.z
                 
-                #line 78
+                #line 79
                 mov r1.xyz, -v1.xyzx
                 add r1.xyz, r1.xyzx, cb0[12].xyzx  // r1.x <- toEye.x; r1.y <- toEye.y; r1.z <- toEye.z
                 
-                #line 81
+                #line 82
                 dp3 r0.w, r1.xyzx, r1.xyzx
                 sqrt r0.w, r0.w  // r0.w <- distToEye
                 
-                #line 84
+                #line 85
                 div r1.xyz, r1.xyzx, r0.wwww
                 
-                #line 87
+                #line 88
                 itof r2.xyzw, l(1, 1, 1, 1)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 93
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t0.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
-                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, v3.xyxx, t1.xyzw, s0
-                mul r2.xyzw, r2.xyzw, r3.xyzw
+                #line 91
+                mov r3.xy, v3.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 92
+                lt r0.w, l(0.000000), cb0[15].x
+                if_nz r0.w
+                
+                #line 94
+                  mov r3.zw, l(0,0,0.500000,0.500000)  // r3.z <- rotOffset.x; r3.w <- rotOffset.y
+                
+                #line 95
+                  mov r4.xy, -r3.zwzz
+                  add r4.xy, r3.xyxx, r4.xyxx  // r4.x <- texCoord.x; r4.y <- texCoord.y
                 
                 #line 96
+                  sincos null, r0.w, cb0[15].x  // r0.w <- cosTheta
+                
+                #line 97
+                  sincos r1.w, null, cb0[15].x  // r1.w <- sinTheta
+                
+                #line 98
+                  mul r4.z, r4.x, r0.w
+                  mul r4.w, r4.y, r1.w
+                  mov r4.w, -r4.w
+                  add r5.x, r4.w, r4.z  // r5.x <- rotatedCoord.x
+                
+                #line 99
+                  mul r1.w, r4.x, r1.w
+                  mul r0.w, r4.y, r0.w
+                  add r5.y, r0.w, r1.w  // r5.y <- rotatedCoord.y
+                
+                #line 100
+                  add r3.xy, r3.zwzz, r5.xyxx  // r3.x <- rotatedCoord.x; r3.y <- rotatedCoord.y
+                
+                #line 101
+                endif 
+                
+                #line 103
+                sample_indexable(texture2d)(float,float,float,float) r3.xyzw, r3.xyxx, t0.xyzw, s0
+                mul r2.xyzw, r2.xyzw, r3.xyzw
+                
+                #line 105
                 max r2.xyzw, r2.xyzw, l(0.000000, 0.000000, 0.000000, 0.000000)
                 min r2.xyzw, r2.xyzw, l(1.000000, 1.000000, 1.000000, 1.000000)  // r2.x <- texColor.x; r2.y <- texColor.y; r2.z <- texColor.z; r2.w <- texColor.w
                 
-                #line 107
+                #line 116
                 mov r3.xyz, l(0,0,0,0)  // r3.x <- ambient.x; r3.y <- ambient.y; r3.z <- ambient.z
                 
-                #line 108
+                #line 117
                 mov r4.xyz, l(0,0,0,0)  // r4.x <- diffuse.x; r4.y <- diffuse.y; r4.z <- diffuse.z
                 
-                #line 109
+                #line 118
                 mov r5.xyz, l(0,0,0,0)  // r5.x <- spec.x; r5.y <- spec.y; r5.z <- spec.z
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx
                 mov r7.xyz, cb1[17].xyzx
@@ -2470,21 +2632,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -2539,21 +2701,21 @@ fxgroup
                 movc r7.xyz, r1.wwww, r7.xyzx, r13.xyzx
                 movc r8.xyz, r1.wwww, r8.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r7.xyz, r7.xyzx  // r7.x <- D.x; r7.y <- D.y; r7.z <- D.z
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r4.xyz, r4.xyzx, r7.xyzx
                 
-                #line 121
+                #line 130
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
-                #line 116
+                #line 125
                 nop 
                 mov r6.xyz, cb1[16].xyzx  // r6.x <- mat.Ambient.x; r6.y <- mat.Ambient.y; r6.z <- mat.Ambient.z
                 mov r7.xyz, cb1[17].xyzx  // r7.x <- mat.Diffuse.x; r7.y <- mat.Diffuse.y; r7.z <- mat.Diffuse.z
@@ -2608,33 +2770,33 @@ fxgroup
                 movc r0.xyz, r1.wwww, r0.yzwy, r13.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 movc r1.xyz, r1.wwww, r1.xyzx, r14.xyzx
                 
-                #line 116 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
+                #line 125 "C:\Users\sungc\Documents\GitHub\DirectXPractice\d3d11CodeSet1\Chapter 8 Texturing\Crate\FX\Basic.fx"
                 mov r6.xyz, r6.xyzx  // r6.x <- A.x; r6.y <- A.y; r6.z <- A.z
                 mov r0.xyz, r0.xyzx  // r0.x <- D.x; r0.y <- D.y; r0.z <- D.z
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
-                #line 119
+                #line 128
                 add r3.xyz, r3.xyzx, r6.xyzx
                 
-                #line 120
+                #line 129
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 
-                #line 121
+                #line 130
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
-                #line 125
+                #line 134
                 add r0.xyz, r0.xyzx, r3.xyzx
                 mul r0.xyz, r0.xyzx, r2.xyzx
                 add r0.xyz, r1.xyzx, r0.xyzx  // r0.x <- litColor.x; r0.y <- litColor.y; r0.z <- litColor.z
                 
-                #line 129
+                #line 138
                 mul r0.w, r2.w, cb1[17].w  // r0.w <- litColor.w
                 
-                #line 131
+                #line 140
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 138 instruction slots used
+                // Approximately 153 instruction slots used
                             
             };
         }
