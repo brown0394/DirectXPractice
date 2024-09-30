@@ -19,11 +19,12 @@
       "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:Effects.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:Vertex.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:Vertex.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\GeometryGenerator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:Vertex.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -41,13 +42,25 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Vertex.h",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.h",
+              "RelativeDocumentMoniker": "Vertex.h",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.h",
+              "RelativeToolTip": "Vertex.h",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-09-27T09:09:50.096Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Basic.fx",
               "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx",
               "RelativeDocumentMoniker": "FX\\Basic.fx",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx",
               "RelativeToolTip": "FX\\Basic.fx",
-              "ViewState": "AQIAAAYAAAAAAAAAAAApwBAAAAAZAAAA",
+              "ViewState": "AQIAAMYAAAAAAAAAAAAvwBgAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-09-13T06:58:39.551Z",
               "EditorCaption": ""
@@ -55,28 +68,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "GeometryGenerator.cpp",
-              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\GeometryGenerator.cpp",
-              "RelativeDocumentMoniker": "..\\..\\Common\\GeometryGenerator.cpp",
-              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\GeometryGenerator.cpp",
-              "RelativeToolTip": "..\\..\\Common\\GeometryGenerator.cpp",
-              "ViewState": "AQIAACQAAAAAAAAAAAAAAAcAAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-09-20T07:35:03.9Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Vertex.cpp",
               "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.cpp",
               "RelativeDocumentMoniker": "Vertex.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Vertex.cpp",
               "RelativeToolTip": "Vertex.cpp",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-09-13T06:58:12.696Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-13T06:58:12.696Z"
             },
             {
               "$type": "Document",
@@ -86,10 +85,9 @@
               "RelativeDocumentMoniker": "Effects.h",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.h",
               "RelativeToolTip": "Effects.h",
-              "ViewState": "AQIAACAAAAAAAAAAAIAwwCsAAABBAAAA",
+              "ViewState": "AQIAAC8AAAAAAAAAAAAuwDoAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-09-23T09:06:01.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-23T09:06:01.811Z"
             },
             {
               "$type": "Document",
@@ -99,10 +97,9 @@
               "RelativeDocumentMoniker": "Effects.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.cpp",
               "RelativeToolTip": "Effects.cpp",
-              "ViewState": "AQIAACwAAAAAAAAAAAAnwDQAAAA5AAAA",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAADEAAAA5AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-09-13T06:57:50.554Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-13T06:57:50.554Z"
             },
             {
               "$type": "Document",
@@ -112,7 +109,7 @@
               "RelativeDocumentMoniker": "CrateDemo.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\CrateDemo.cpp",
               "RelativeToolTip": "CrateDemo.cpp",
-              "ViewState": "AQIAAHwAAAAAAAAAAIAwwBMAAAAcAAAA",
+              "ViewState": "AQIAANUAAAAAAAAAAAAuwM8AAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-09-13T06:54:06.886Z",
               "EditorCaption": ""
