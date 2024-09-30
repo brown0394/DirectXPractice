@@ -87,6 +87,8 @@ private:
 	float mRadius;
 
 	POINT mLastMousePos;
+	ID3D11ShaderResourceView* mDiffuseMapSRV;
+	XMFLOAT4X4 mTexTransform;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -107,8 +109,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
  
 
 LitSkullApp::LitSkullApp(HINSTANCE hInstance)
-: D3DApp(hInstance), mShapesVB(0), mShapesIB(0), mSkullVB(0), mSkullIB(0), mSkullIndexCount(0), mLightCount(1),
-  mEyePosW(0.0f, 0.0f, 0.0f), mTheta(1.5f*MathHelper::Pi), mPhi(0.1f*MathHelper::Pi), mRadius(15.0f)
+	: D3DApp(hInstance), mShapesVB(0), mShapesIB(0), mSkullVB(0), mSkullIB(0), mSkullIndexCount(0), mLightCount(1),
+	mEyePosW(0.0f, 0.0f, 0.0f), mTheta(1.5f * MathHelper::Pi), mPhi(0.1f * MathHelper::Pi), mRadius(15.0f),
+	mDiffuseMapSRV(0)
 {
 	mMainWndCaption = L"LitSkull Demo";
 	
@@ -119,6 +122,7 @@ LitSkullApp::LitSkullApp(HINSTANCE hInstance)
 	XMStoreFloat4x4(&mGridWorld, I);
 	XMStoreFloat4x4(&mView, I);
 	XMStoreFloat4x4(&mProj, I);
+	XMStoreFloat4x4(&mTexTransform, I);
 
 	XMMATRIX boxScale = XMMatrixScaling(3.0f, 1.0f, 3.0f);
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 0.5f, 0.0f);
@@ -179,6 +183,7 @@ LitSkullApp::~LitSkullApp()
 	ReleaseCOM(mShapesIB);
 	ReleaseCOM(mSkullVB);
 	ReleaseCOM(mSkullIB);
+	ReleaseCOM(mDiffuseMapSRV);
 
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll(); 
@@ -192,7 +197,8 @@ bool LitSkullApp::Init()
 	// Must init Effects first since InputLayouts depend on shader signatures.
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
-
+	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
+		L"darkbrickdxt1.dds", 0, 0, &mDiffuseMapSRV, 0));
 	BuildShapeGeometryBuffers();
 	BuildSkullGeometryBuffers();
 
@@ -280,7 +286,7 @@ void LitSkullApp::DrawScene()
     {
 		md3dImmediateContext->IASetVertexBuffers(0, 1, &mShapesVB, &stride, &offset);
 		md3dImmediateContext->IASetIndexBuffer(mShapesIB, DXGI_FORMAT_R32_UINT, 0);
-
+		Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
 		// Draw the grid.
 		XMMATRIX world = XMLoadFloat4x4(&mGridWorld);
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
@@ -290,6 +296,7 @@ void LitSkullApp::DrawScene()
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetMaterial(mGridMat);
+		Effects::BasicFX->SetUseTexture(false);
 
 		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
@@ -303,6 +310,9 @@ void LitSkullApp::DrawScene()
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetMaterial(mBoxMat);
+		Effects::BasicFX->SetUseTexture(true);
+		Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
+
 
 		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
@@ -318,6 +328,8 @@ void LitSkullApp::DrawScene()
 			Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 			Effects::BasicFX->SetWorldViewProj(worldViewProj);
 			Effects::BasicFX->SetMaterial(mCylinderMat);
+			Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
+			Effects::BasicFX->SetUseTexture(true);
 
 			activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 			md3dImmediateContext->DrawIndexed(mCylinderIndexCount, mCylinderIndexOffset, mCylinderVertexOffset);
@@ -333,7 +345,10 @@ void LitSkullApp::DrawScene()
 			Effects::BasicFX->SetWorld(world);
 			Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 			Effects::BasicFX->SetWorldViewProj(worldViewProj);
+			Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
 			Effects::BasicFX->SetMaterial(mSphereMat);
+			Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
+			Effects::BasicFX->SetUseTexture(true);
 
 			activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 			md3dImmediateContext->DrawIndexed(mSphereIndexCount, mSphereIndexOffset, mSphereVertexOffset);
@@ -352,6 +367,7 @@ void LitSkullApp::DrawScene()
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetMaterial(mSkullMat);
+		Effects::BasicFX->SetUseTexture(false);
 
 		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mSkullIndexCount, 0, 0);
@@ -460,24 +476,28 @@ void LitSkullApp::BuildShapeGeometryBuffers()
 	{
 		vertices[k].Pos    = box.Vertices[i].Position;
 		vertices[k].Normal = box.Vertices[i].Normal;
+		vertices[k].Tex = box.Vertices[i].TexC;
 	}
 
 	for(size_t i = 0; i < grid.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos    = grid.Vertices[i].Position;
 		vertices[k].Normal = grid.Vertices[i].Normal;
+		vertices[k].Tex    = grid.Vertices[i].TexC;
 	}
 
 	for(size_t i = 0; i < sphere.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos    = sphere.Vertices[i].Position;
 		vertices[k].Normal = sphere.Vertices[i].Normal;
+		vertices[k].Tex	   = sphere.Vertices[i].TexC;
 	}
 
 	for(size_t i = 0; i < cylinder.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos    = cylinder.Vertices[i].Position;
 		vertices[k].Normal = cylinder.Vertices[i].Normal;
+		vertices[k].Tex    = cylinder.Vertices[i].TexC;
 	}
 
     D3D11_BUFFER_DESC vbd;
