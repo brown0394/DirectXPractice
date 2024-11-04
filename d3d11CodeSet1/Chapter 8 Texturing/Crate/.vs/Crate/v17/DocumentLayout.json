@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:CrateDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:Effects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|solutionrelative:FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D450380B-CD03-456C-B874-4639827A617C}|Crate.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -54,13 +54,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Basic.fx",
               "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx",
               "RelativeDocumentMoniker": "FX\\Basic.fx",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\FX\\Basic.fx",
               "RelativeToolTip": "FX\\Basic.fx",
-              "ViewState": "AQIAAMYAAAAAAAAAAAAvwBgAAAAXAAAA",
+              "ViewState": "AQIAADwAAAAAAAAAAAAvwB0AAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-09-13T06:58:39.551Z",
               "EditorCaption": ""
@@ -91,15 +91,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Effects.cpp",
               "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.cpp",
               "RelativeDocumentMoniker": "Effects.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\Effects.cpp",
               "RelativeToolTip": "Effects.cpp",
-              "ViewState": "AQIAACcAAAAAAAAAAAAAADEAAAA5AAAA",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAADEAAAA5AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-09-13T06:57:50.554Z"
+              "WhenOpened": "2024-09-13T06:57:50.554Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -109,7 +110,7 @@
               "RelativeDocumentMoniker": "CrateDemo.cpp",
               "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 8 Texturing\\Crate\\CrateDemo.cpp",
               "RelativeToolTip": "CrateDemo.cpp",
-              "ViewState": "AQIAANUAAAAAAAAAAAAuwM8AAAAXAAAA",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAAAJQAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-09-13T06:54:06.886Z",
               "EditorCaption": ""

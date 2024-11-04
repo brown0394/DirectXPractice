@@ -1,0 +1,123 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\MirrorDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|solutionrelative:MirrorDemo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|solutionrelative:RenderStates.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|solutionrelative:RenderStates.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\Effects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|solutionrelative:Effects.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{876D20E3-51E0-4190-A673-7AAF888C03EA}|Mirror.vcxproj|solutionrelative:FX\\Basic.fx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "d3dApp.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp",
+              "RelativeDocumentMoniker": "..\\..\\Common\\d3dApp.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Common\\d3dApp.cpp",
+              "RelativeToolTip": "..\\..\\Common\\d3dApp.cpp",
+              "ViewState": "AQIAAJ8AAAAAAAAAAAAAAKgAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-28T09:18:18.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Effects.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\Effects.cpp",
+              "RelativeDocumentMoniker": "Effects.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\Effects.cpp",
+              "RelativeToolTip": "Effects.cpp",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-28T09:17:35.564Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Basic.fx",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\FX\\Basic.fx",
+              "RelativeDocumentMoniker": "FX\\Basic.fx",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\FX\\Basic.fx",
+              "RelativeToolTip": "FX\\Basic.fx",
+              "ViewState": "AQIAAGsBAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-10-28T09:04:10.389Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RenderStates.h",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.h",
+              "RelativeDocumentMoniker": "RenderStates.h",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.h",
+              "RelativeToolTip": "RenderStates.h",
+              "ViewState": "AQIAABMAAAAAAAAAAAAMwB4AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-10-10T07:40:11.242Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RenderStates.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.cpp",
+              "RelativeDocumentMoniker": "RenderStates.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\RenderStates.cpp",
+              "RelativeToolTip": "RenderStates.cpp",
+              "ViewState": "AQIAAJcAAAAAAAAAAAAswLAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-09T07:48:44.964Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MirrorDemo.cpp",
+              "DocumentMoniker": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\MirrorDemo.cpp",
+              "RelativeDocumentMoniker": "MirrorDemo.cpp",
+              "ToolTip": "C:\\Users\\sungc\\Documents\\GitHub\\DirectXPractice\\d3d11CodeSet1\\Chapter 10 Stenciling\\Mirror\\MirrorDemo.cpp",
+              "RelativeToolTip": "MirrorDemo.cpp",
+              "ViewState": "AQIAAOUBAAAAAAAAAAAvwO8BAAACAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-09T07:45:22.834Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

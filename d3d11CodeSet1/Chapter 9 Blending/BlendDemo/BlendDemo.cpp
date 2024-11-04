@@ -83,6 +83,7 @@ private:
 	XMFLOAT4X4 mProj;
 
 	UINT mLandIndexCount;
+	UINT mCylinderIndexCount;
 
 	XMFLOAT2 mWaterTexOffset;
 
@@ -202,7 +203,7 @@ bool BlendApp::Init()
 		L"Textures/water2.dds", 0, 0, &mWavesMapSRV, 0 ));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice, 
-		L"Textures/WireFence.dds", 0, 0, &mBoxMapSRV, 0 ));
+		L"Textures/BoltAnim/Bolt001.dds", 0, 0, &mBoxMapSRV, 0 ));
 
 	BuildLandGeometryBuffers();
 	BuildWaveGeometryBuffers();
@@ -346,22 +347,21 @@ void BlendApp::DrawScene()
 	}
 
 	D3DX11_TECHNIQUE_DESC techDesc;
-
 	//
-	// Draw the box with alpha clipping.
-	// 
+// Draw the box with alpha clipping.
+// 
 
-	boxTech->GetDesc( &techDesc );
-	for(UINT p = 0; p < techDesc.Passes; ++p)
-    {
+	boxTech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
 		md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
 		md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 
 		// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
-		XMMATRIX worldViewProj = world*view*proj;
-		
+		XMMATRIX worldViewProj = world * view * proj;
+
 		Effects::BasicFX->SetWorld(world);
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
@@ -370,13 +370,16 @@ void BlendApp::DrawScene()
 		Effects::BasicFX->SetDiffuseMap(mBoxMapSRV);
 
 		md3dImmediateContext->RSSetState(RenderStates::NoCullRS);
+		md3dImmediateContext->OMSetBlendState(RenderStates::NonBlackBS, blendFactor, 0xffffffff);
+		//md3dImmediateContext->OMSetDepthStencilState(RenderStates::NoDepthTestDSS, 1);
 		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(36, 0, 0);
+		md3dImmediateContext->DrawIndexed(mCylinderIndexCount, 0, 0);
 
 		// Restore default render state.
 		md3dImmediateContext->RSSetState(0);
+		md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff);
+		//md3dImmediateContext->OMSetDepthStencilState(0, 0);
 	}
-
 	//
 	// Draw the hills and water with texture and fog (no alpha clipping needed).
 	//
@@ -404,6 +407,7 @@ void BlendApp::DrawScene()
 
 		landAndWavesTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(mLandIndexCount, 0, 0);
+
 
 		//
 		// Draw the waves.
@@ -605,8 +609,8 @@ void BlendApp::BuildCrateGeometryBuffers()
 	GeometryGenerator::MeshData box;
 
 	GeometryGenerator geoGen;
-	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
-
+	geoGen.CreateCylinder(0.5f, 0.5f, 2.0f, 20, 20, box, false);
+	mCylinderIndexCount = box.Indices.size();
 	//
 	// Extract the vertex elements we are interested in and pack the
 	// vertices of all the meshes into one vertex buffer.
@@ -637,7 +641,7 @@ void BlendApp::BuildCrateGeometryBuffers()
 
 	D3D11_BUFFER_DESC ibd;
     ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * box.Indices.size();
+	ibd.ByteWidth = sizeof(UINT) * mCylinderIndexCount;
     ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     ibd.CPUAccessFlags = 0;
     ibd.MiscFlags = 0;

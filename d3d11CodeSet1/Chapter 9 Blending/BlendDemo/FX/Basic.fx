@@ -96,7 +96,7 @@ float4 PS(VertexOut pin, uniform int gLightCount, uniform bool gUseTexure, unifo
 			// test as soon as possible so that we can potentially exit the shader 
 			// early, thereby skipping the rest of the shader code.
 			clip(texColor.a - 0.1f);
-		}
+        }
 	}
 	 
 	//
